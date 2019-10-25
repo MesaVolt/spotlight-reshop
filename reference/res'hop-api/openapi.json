@@ -1,0 +1,634 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Rés'Hop API",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/authentication/login": {
+      "post": {
+        "summary": "Login",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "Authentication token that's going to be passed to subsequent calls"
+                    },
+                    "user": {
+                      "$ref": "./models/authenticated-user.v1.json"
+                    }
+                  },
+                  "required": [
+                    "token"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request (missing keys)"
+          },
+          "401": {
+            "description": "Unauthorized (wrong credentials)"
+          },
+          "503": {
+            "description": "Service Unavailable (deploying)\nThis status is only specified on this endpoint, but will be handled on the other endpoints too."
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "username",
+                  "password"
+                ],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {}
+            }
+          },
+          "description": "Credentials"
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "summary": "Get events",
+        "tags": [],
+        "responses": {},
+        "description": "Retrieve events list",
+        "security": [
+          {
+            "JWT token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "timeline",
+            "description": "Future / past events",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "default": "0",
+              "minimum": 0
+            },
+            "in": "query",
+            "name": "offset"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "default": "20",
+              "maximum": 100
+            },
+            "in": "query",
+            "name": "limit"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "description": "Shorter version of the full event",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "datetime": {
+                      "type": "string"
+                    },
+                    "location": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/event/{eventId}": {
+      "parameters": [
+        {
+          "type": "string",
+          "name": "eventId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get event",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "yessers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "./models/user-light.v1.json"
+                      }
+                    },
+                    "event": {
+                      "$ref": "./models/event.v1.yaml"
+                    },
+                    "response": {
+                      "$ref": "./models/Enums/eventanswer.v1.json"
+                    }
+                  },
+                  "required": [
+                    "yessers",
+                    "event"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    },
+    "/members": {
+      "get": {
+        "summary": "Get members",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "./models/user.v1.yaml"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found (invalid branchId for instance)"
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "branchId",
+            "description": "Filters by branchId"
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "offset"
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit"
+          }
+        ],
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    },
+    "/recommandations": {
+      "get": {
+        "summary": "Get recommandations",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "./models/recommandation.v1.json"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Returns loggedin user's recommandations",
+        "security": [
+          {
+            "JWT token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "offset"
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "status",
+            "description": "Filters by status"
+          }
+        ]
+      },
+      "post": {
+        "summary": "Recommand someone to someone",
+        "tags": [],
+        "responses": {},
+        "security": [
+          {
+            "JWT token": []
+          }
+        ],
+        "description": "Add a recommandation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "targetId": {
+                    "type": "integer"
+                  },
+                  "prospect": {
+                    "$ref": "./models/prospect.v1.yaml"
+                  }
+                },
+                "required": [
+                  "targetId"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "summary": "Search",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "user",
+                          "recommandation",
+                          "event",
+                          "news",
+                          "document",
+                          "folder"
+                        ]
+                      },
+                      "object": {
+                        "type": "object",
+                        "description": "Short JSON representation of the result"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "example-1": {
+                    "value": [
+                      {
+                        "type": "user",
+                        "object": {
+                          "id": 1,
+                          "firstName": "Nicolas",
+                          "lastName": "Baron",
+                          "companyName": "AXA",
+                          "userPicture": "https://api.reshop.fr/pictures/....jpg",
+                          "companyPicture": "https://api.reshop.fr/pictures/....jpg"
+                        }
+                      },
+                      {
+                        "type": "company",
+                        "object": {
+                          "id": 1,
+                          "name": "AXA",
+                          "picture": "https://api.reshop.fr/pictures/....jpg",
+                          "website": null
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Search endpoint, finding results among users, companies, recommandations, events, news, directories and documents.\n\nWarning: the implementation should return the same results on subsequent calls: it would be a good idea to order items by their id (or any other field) to obtain a deterministic behavior.",
+        "security": [
+          {
+            "JWT token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "expr",
+            "description": "Search expression",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "offset"
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit"
+          }
+        ]
+      }
+    },
+    "/feed": {
+      "get": {
+        "summary": "Feed",
+        "tags": [],
+        "security": [
+          {
+            "JWT token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "offset"
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit"
+          }
+        ],
+        "description": "Returns logged in user feed: branch messages, past events, sent/received recommandations, new members, next events (when they're planned)",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "message",
+                          "event",
+                          "recommandation",
+                          "new-member",
+                          "planned-event"
+                        ]
+                      },
+                      "object": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "example-1": {
+                    "value": [
+                      {
+                        "id": 1,
+                        "type": "message",
+                        "object": {
+                          "id": 1,
+                          "sender": {
+                            "id": 1,
+                            "firstName": "Nicolas",
+                            "lastName": "Baron",
+                            "companyName": "AXA",
+                            "userPicture": null,
+                            "companyPicture": null
+                          },
+                          "date": "2019-10-25T09:00:22+02:00",
+                          "content": "<h2>COUCOU LES LOULOUS</h2>",
+                          "reactions": {
+                            "likes": 2,
+                            "super-likes": 0,
+                            "loves": 0
+                          },
+                          "myReaction": null
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/message/{messageId}/reactions": {
+      "parameters": [
+        {
+          "type": "string",
+          "name": "messageId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Post a reaction",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "Reaction name (`like`, `super-like`, `love`)"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request: invalid reaction enum value, for instance"
+          },
+          "404": {
+            "description": "Not Found: message not found, for instance"
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ],
+        "description": "Posts a new reaction. When a reaction has already been posted for this user, the previous one should be deleted first."
+      },
+      "delete": {
+        "summary": "Remove my reaction",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "description": "Deletes logged-in user reaction for this message",
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    },
+    "/feedback": {
+      "post": {
+        "summary": "Post a feedback",
+        "tags": [],
+        "responses": {},
+        "security": [
+          {
+            "JWT token": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profile": {
+      "post": {
+        "summary": "Update logged-in user profile",
+        "tags": [],
+        "responses": {},
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./models/user.v1.yaml"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "JWT token": {
+        "name": "X-Auth-Token",
+        "type": "apiKey",
+        "in": "header"
+      }
+    }
+  }
+}

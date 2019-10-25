@@ -1,0 +1,43 @@
+{
+  "title": "Recommandation",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "source": {
+      "$ref": "./user.v1.yaml"
+    },
+    "target": {
+      "$ref": "./prospect.v1.yaml"
+    },
+    "prospect": {
+      "$ref": "./prospect.v1.yaml"
+    },
+    "status": {
+      "type": "string",
+      "default": "pending",
+      "description": "`pending|over`",
+      "enum": [
+        "pending",
+        "over"
+      ]
+    },
+    "result": {
+      "type": "string",
+      "enum": [
+        "success",
+        "failure",
+        "null"
+      ],
+      "description": "`null|success|failure`"
+    }
+  },
+  "required": [
+    "id",
+    "source",
+    "target",
+    "prospect",
+    "status"
+  ]
+}

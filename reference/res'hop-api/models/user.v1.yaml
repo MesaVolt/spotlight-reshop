@@ -1,0 +1,45 @@
+title: User - full
+type: object
+properties:
+  id:
+    type: integer
+  firstName:
+    type: string
+  lastName:
+    type: string
+  picture:
+    type:
+      - string
+      - 'null'
+    description: Absolute URL of the picture
+  company:
+    $ref: ./company.v1.yaml
+  phone:
+    type: string
+  email:
+    type: string
+  twitter:
+    type:
+      - string
+      - 'null'
+  linkedin:
+    type:
+      - string
+      - 'null'
+  facebook:
+    type:
+      - string
+      - 'null'
+  bio:
+    type:
+      - string
+      - 'null'
+  branch:
+    $ref: ./branch.v1.json
+required:
+  - id
+  - firstName
+  - lastName
+  - company
+  - phone
+  - email

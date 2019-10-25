@@ -1,0 +1,29 @@
+title: Event
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  location:
+    type: string
+  image:
+    type: string
+    description: ''
+  description:
+    type: string
+  date:
+    type: string
+    description: Y-m-d
+  fromHour:
+    type: string
+    description: 'H:i'
+  toHour:
+    type: string
+    description: 'H:i'
+required:
+  - id
+  - name
+  - date
+  - fromHour
+  - toHour

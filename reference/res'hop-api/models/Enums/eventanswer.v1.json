@@ -1,0 +1,12 @@
+{
+  "type": "string",
+  "title": "EventAnswer",
+  "enum": [
+    "none",
+    "no",
+    "maybe",
+    "yes"
+  ],
+  "pattern": "none|yes|maybe|no",
+  "description": "`none|no|maybe|yes`"
+}

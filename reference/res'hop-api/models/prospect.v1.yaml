@@ -1,0 +1,20 @@
+title: Prospect
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  phone:
+    type:
+      - string
+      - 'null'
+  email:
+    type:
+      - string
+      - 'null'
+  need:
+    type: string
+required:
+  - name
+  - need

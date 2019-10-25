@@ -1,0 +1,19 @@
+title: Company
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  picture:
+    type:
+      - string
+      - 'null'
+    description: Absolute URL of the picture
+  website:
+    type:
+      - string
+      - 'null'
+required:
+  - id
+  - name

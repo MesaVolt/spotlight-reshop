@@ -1,0 +1,36 @@
+{
+  "title": "User - light",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "companyName": {
+      "type": "string"
+    },
+    "userPicture": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "companyPicture": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "firstName",
+    "lastName",
+    "companyName"
+  ]
+}

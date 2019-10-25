@@ -1,0 +1,12 @@
+{
+  "title": "User - authenticated",
+  "type": "object",
+  "properties": {
+    "calendarFeedUrl": {
+      "type": "string"
+    },
+    "user": {
+      "$ref": "./user.v1.yaml"
+    }
+  }
+}
