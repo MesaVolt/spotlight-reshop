@@ -31,6 +31,10 @@
         "null"
       ],
       "description": "`null|success|failure`"
+    },
+    "date": {
+      "type": "string",
+      "description": "Y-m-d"
     }
   },
   "required": [
@@ -38,6 +42,7 @@
     "source",
     "target",
     "prospect",
-    "status"
+    "status",
+    "date"
   ]
 }
