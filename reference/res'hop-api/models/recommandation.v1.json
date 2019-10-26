@@ -6,10 +6,10 @@
       "type": "integer"
     },
     "source": {
-      "$ref": "./user.v1.yaml"
+      "$ref": "./user-light.v1.json"
     },
     "target": {
-      "$ref": "./prospect.v1.yaml"
+      "$ref": "./user-light.v1.json"
     },
     "prospect": {
       "$ref": "./prospect.v1.yaml"
