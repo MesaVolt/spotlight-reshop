@@ -625,9 +625,8 @@
   "components": {
     "securitySchemes": {
       "JWT token": {
-        "name": "X-Auth-Token",
-        "type": "apiKey",
-        "in": "header"
+        "type": "http",
+        "scheme": "Bearer"
       }
     }
   }
