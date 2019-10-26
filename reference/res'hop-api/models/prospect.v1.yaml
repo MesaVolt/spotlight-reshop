@@ -6,9 +6,7 @@ properties:
   name:
     type: string
   phone:
-    type:
-      - string
-      - 'null'
+    type: string
   email:
     type:
       - string
@@ -17,4 +15,5 @@ properties:
     type: string
 required:
   - name
+  - phone
   - need
