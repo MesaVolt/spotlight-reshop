@@ -164,7 +164,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "yessers": {
+                    "participants": {
                       "type": "array",
                       "items": {
                         "$ref": "./models/user-light.v1.json"
@@ -178,7 +178,7 @@
                     }
                   },
                   "required": [
-                    "yessers",
+                    "participants",
                     "event"
                   ]
                 }
